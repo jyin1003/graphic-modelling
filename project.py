@@ -18,6 +18,7 @@ g_wrenchModel = None
 g_groundModel = None
 g_crocodileModel = None
 g_flagModel = None
+g_cottageModel = None
 
 g_worldSpaceLightDirection = [-1, -1, -1]
 g_cameraDistance = 200.0
@@ -39,6 +40,7 @@ def renderFrame(width: int, height: int) -> None:
     global g_groundModel
     global g_crocodileModel
     global g_flagModel
+    global g_cottageModel
     
     global g_worldSpaceLightDirection
     global g_cameraDistance
@@ -80,7 +82,7 @@ def renderFrame(width: int, height: int) -> None:
     drawObjModel(viewToClipTfm, worldToViewTfm, wrenchModelToWorldTransform, g_wrenchModel)
     
     crocodileModelToWorldTransform = lu.Mat4()
-    crocodileModelToWorldTransform = lu.make_translation(0.0, 40.0, 50.0) * crocodileModelToWorldTransform
+    crocodileModelToWorldTransform = lu.make_translation(0.0, 40.0, 70.0) * crocodileModelToWorldTransform
     drawObjModel(viewToClipTfm, worldToViewTfm, crocodileModelToWorldTransform, g_crocodileModel)
     
     flagModelToWorldTransform = lu.Mat4()
@@ -91,16 +93,22 @@ def renderFrame(width: int, height: int) -> None:
     flagModelToWorldTransform = lu.make_rotation_x(math.radians(-90.0)) * flagModelToWorldTransform
     drawObjModel(viewToClipTfm, worldToViewTfm, flagModelToWorldTransform, g_flagModel)
     
+    cottageModelToWorldTransform = lu.Mat4()
+    cottageModelToWorldTransform = lu.make_translation(-70.0, 0.0, -70.0) * cottageModelToWorldTransform
+    drawObjModel(viewToClipTfm, worldToViewTfm, cottageModelToWorldTransform, g_cottageModel)
+    
 def initResources() -> None:
     global g_wrenchModel
     global g_groundModel
     global g_crocodileModel
     global g_flagModel
+    global g_cottageModel
     
     g_wrenchModel = ObjModel("10299_Monkey_Wrench_v1.obj")
     g_groundModel = ObjModel("ground.obj")
     g_crocodileModel = ObjModel("12262_Crocodile_v1.obj")
     g_flagModel = ObjModel("14050_Pirate_Flag_Nest_v1_L3.obj")
+    g_cottageModel = ObjModel("House.obj")
     """
         the basic magic setup turns off backface culling, 
         here we turn it back in again.
@@ -114,7 +122,7 @@ def drawUi() -> None:
     global g_lookTargetHeight
 
     if imgui.tree_node("Camera Controls", imgui.TREE_NODE_DEFAULT_OPEN):
-        _,g_cameraDistance = imgui.slider_float("CameraDistance", g_cameraDistance, 1.0, 250.0)
+        _,g_cameraDistance = imgui.slider_float("CameraDistance", g_cameraDistance, 1.0, 400.0)
         _,g_cameraYaw = imgui.slider_float("CameraYaw", g_cameraYaw, 0.0, 360.0)
         _,g_cameraPitch = imgui.slider_float("CameraPitch", g_cameraPitch, -89.0, 89.0)
         _,g_lookTargetHeight = imgui.slider_float("LookTargetHeight", g_lookTargetHeight, 0.0, 25.0)
