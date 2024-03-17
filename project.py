@@ -17,6 +17,7 @@ import lab_utils as lu
 g_wrenchModel = None
 g_groundModel = None
 g_crocodileModel = None
+g_flagModel = None
 
 g_worldSpaceLightDirection = [-1, -1, -1]
 g_cameraDistance = 200.0
@@ -37,6 +38,7 @@ def renderFrame(width: int, height: int) -> None:
     global g_wrenchModel
     global g_groundModel
     global g_crocodileModel
+    global g_flagModel
     
     global g_worldSpaceLightDirection
     global g_cameraDistance
@@ -66,35 +68,39 @@ def renderFrame(width: int, height: int) -> None:
     
     worldToViewTfm = magic.make_lookAt(eye, target, [0, 1, 0])
     viewToClipTfm = magic.make_perspective(45.0, width / height, 0.1, 1000.0)
-    """
-        rendering each of the parts of the crane in turn, 
-        note however that the order of drawing is irrelevant, 
-        what matteris is how the transforms are combined.
-    """    
-    ground_scale_factor = 15.0
-    scaling_matrix = lu.make_scale(ground_scale_factor, ground_scale_factor, ground_scale_factor)
 
-    
-    wrenchModelToWorldTransform = lu.Mat4()
-    drawObjModel(viewToClipTfm, worldToViewTfm, wrenchModelToWorldTransform, g_wrenchModel)
-    
+    ground_scale_factor = 15.0
+    ground_scaling_matrix = lu.make_scale(ground_scale_factor, ground_scale_factor, ground_scale_factor)
     groundModelToWorldTransform = lu.Mat4()
-    groundModelToWorldTransform = scaling_matrix * groundModelToWorldTransform
+    groundModelToWorldTransform = ground_scaling_matrix * groundModelToWorldTransform
     drawObjModel(viewToClipTfm, worldToViewTfm, groundModelToWorldTransform, g_groundModel)
     
+    wrenchModelToWorldTransform = lu.Mat4()
+    wrenchModelToWorldTransform = lu.make_translation(0.0, 10.0, -40.0) * wrenchModelToWorldTransform
+    drawObjModel(viewToClipTfm, worldToViewTfm, wrenchModelToWorldTransform, g_wrenchModel)
+    
     crocodileModelToWorldTransform = lu.Mat4()
-    # -, y, x
-    crocodileModelToWorldTransform = lu.make_translation(0.0, 0.0, 50.0) * crocodileModelToWorldTransform
+    crocodileModelToWorldTransform = lu.make_translation(0.0, 40.0, 50.0) * crocodileModelToWorldTransform
     drawObjModel(viewToClipTfm, worldToViewTfm, crocodileModelToWorldTransform, g_crocodileModel)
+    
+    flagModelToWorldTransform = lu.Mat4()
+    flag_scale_factor = 0.6
+    flag_scaling_matrix = lu.make_scale(flag_scale_factor, flag_scale_factor, flag_scale_factor)
+    flagModelToWorldTransform = flag_scaling_matrix * flagModelToWorldTransform
+    flagModelToWorldTransform = lu.make_translation(0.0, 0.0, 0.0) * flagModelToWorldTransform
+    flagModelToWorldTransform = lu.make_rotation_x(math.radians(-90.0)) * flagModelToWorldTransform
+    drawObjModel(viewToClipTfm, worldToViewTfm, flagModelToWorldTransform, g_flagModel)
     
 def initResources() -> None:
     global g_wrenchModel
     global g_groundModel
     global g_crocodileModel
+    global g_flagModel
     
     g_wrenchModel = ObjModel("10299_Monkey_Wrench_v1.obj")
     g_groundModel = ObjModel("ground.obj")
     g_crocodileModel = ObjModel("12262_Crocodile_v1.obj")
+    g_flagModel = ObjModel("14050_Pirate_Flag_Nest_v1_L3.obj")
     """
         the basic magic setup turns off backface culling, 
         here we turn it back in again.
@@ -102,14 +108,6 @@ def initResources() -> None:
     glEnable(GL_CULL_FACE)
 
 def drawUi() -> None:
-    """
-        Called by the magic at a good time to do UI stuff, 
-        you can actually add UI code whenever, but it is generally 
-        best to keep it to itself, from a design standpoint - 
-        avoids cluttering up the rendering code.
-        You can safely ignore the details of this bit of code 
-        for this lab, it uses ImGui.
-    """
     global g_cameraDistance
     global g_cameraYaw
     global g_cameraPitch

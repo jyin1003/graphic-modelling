@@ -6,12 +6,12 @@ Tf 1.00 1.00 1.00
 map_Kd green.jpg
 Ni 1.00
 Ks 0.50 0.50 0.50
-newmtl mat3
+newmtl redmat
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
-map_Kd green.jpg
+map_Kd red.jpg
 Ni 1.00
 Ks 0.50 0.50 0.50
 newmtl mat3
