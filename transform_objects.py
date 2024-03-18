@@ -111,11 +111,11 @@ def initResources() -> None:
     global g_flagModel
     global g_cottageModel
     
-    g_wrenchModel = ObjModel("10299_Monkey_Wrench_v1.obj")
-    g_groundModel = ObjModel("ground.obj")
-    g_crocodileModel = ObjModel("12262_Crocodile_v1.obj")
-    g_flagModel = ObjModel("14050_Pirate_Flag_Nest_v1_L3.obj")
-    g_cottageModel = ObjModel("House.obj")
+    g_wrenchModel = ObjModel("objects/10299_Monkey_Wrench_v1.obj")
+    g_groundModel = ObjModel("objects/ground.obj")
+    g_crocodileModel = ObjModel("objects/12262_Crocodile_v1.obj")
+    g_flagModel = ObjModel("objects/14050_Pirate_Flag_Nest_v1_L3.obj")
+    g_cottageModel = ObjModel("objects/House.obj")
     """
         the basic magic setup turns off backface culling, 
         here we turn it back in again.
