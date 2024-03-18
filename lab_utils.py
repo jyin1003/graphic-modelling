@@ -243,6 +243,27 @@ def make_rotation_z(angle: float) -> Mat4:
                  [-s, c, 0, 0],
                  [ 0, 0, 1, 0],
                  [ 0, 0, 0, 1]])
+    
+def make_rotation_around_point(angle: float, axis: str, point: Vec3) -> Mat4:
+    """
+    Returns a 4x4 matrix representing a rotation around
+    the specified axis by the given angle (in radians) about the given point.
+    """
+    translation_to_origin = make_translation(-point[0], -point[1], -point[2])
+
+    # Rotate about the origin
+    if axis == 'x':
+        rotation = make_rotation_x(angle)
+    elif axis == 'y':
+        rotation = make_rotation_y(angle)
+    elif axis == 'z':
+        rotation = make_rotation_z(angle)
+
+    # Translate back to the original position
+    translation_to_point = make_translation(point[0], point[1], point[2])
+
+    return translation_to_point * rotation * translation_to_origin
+
 #endregion
 # 
 # Matrix operations

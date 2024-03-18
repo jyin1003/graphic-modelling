@@ -79,10 +79,13 @@ def renderFrame(width: int, height: int) -> None:
     
     wrenchModelToWorldTransform = lu.Mat4()
     wrenchModelToWorldTransform = lu.make_translation(0.0, 10.0, -40.0) * wrenchModelToWorldTransform
+    wrenchModelToWorldTransform = lu.make_translation(80.0, 5.0, 40.0) * wrenchModelToWorldTransform
     drawObjModel(viewToClipTfm, worldToViewTfm, wrenchModelToWorldTransform, g_wrenchModel)
     
     crocodileModelToWorldTransform = lu.Mat4()
     crocodileModelToWorldTransform = lu.make_translation(0.0, 40.0, 70.0) * crocodileModelToWorldTransform
+    crocodileModelToWorldTransform = lu.make_rotation_around_point(math.radians(-90.0), "x", (0,40,70)) * crocodileModelToWorldTransform
+    #crocodileModelToWorldTransform = lu.make_rotation_x(math.radians(-90.0)) * crocodileModelToWorldTransform
     drawObjModel(viewToClipTfm, worldToViewTfm, crocodileModelToWorldTransform, g_crocodileModel)
     
     flagModelToWorldTransform = lu.Mat4()
@@ -94,9 +97,13 @@ def renderFrame(width: int, height: int) -> None:
     drawObjModel(viewToClipTfm, worldToViewTfm, flagModelToWorldTransform, g_flagModel)
     
     cottageModelToWorldTransform = lu.Mat4()
+    cottage_scale_factor = 5
+    cottage_scaling_matrix = lu.make_scale(cottage_scale_factor, cottage_scale_factor, cottage_scale_factor)
+    cottageModelToWorldTransform = cottage_scaling_matrix * cottageModelToWorldTransform
     cottageModelToWorldTransform = lu.make_translation(-70.0, 0.0, -70.0) * cottageModelToWorldTransform
+    cottageModelToWorldTransform = lu.make_rotation_around_point(math.radians(90.0), "y", (-60,-40,-80)) * cottageModelToWorldTransform
     drawObjModel(viewToClipTfm, worldToViewTfm, cottageModelToWorldTransform, g_cottageModel)
-    
+
 def initResources() -> None:
     global g_wrenchModel
     global g_groundModel
