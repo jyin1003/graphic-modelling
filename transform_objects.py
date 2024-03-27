@@ -92,7 +92,6 @@ def renderFrame(width: int, height: int) -> None:
     flag_scale_factor = 0.6
     flag_scaling_matrix = lu.make_scale(flag_scale_factor, flag_scale_factor, flag_scale_factor)
     flagModelToWorldTransform = flag_scaling_matrix * flagModelToWorldTransform
-    flagModelToWorldTransform = lu.make_translation(0.0, 0.0, 0.0) * flagModelToWorldTransform
     flagModelToWorldTransform = lu.make_rotation_x(math.radians(-90.0)) * flagModelToWorldTransform
     drawObjModel(viewToClipTfm, worldToViewTfm, flagModelToWorldTransform, g_flagModel)
     
@@ -210,6 +209,6 @@ def drawObjModel(viewToClipTfm: lu.Mat4, worldToViewTfm: lu.Mat4,
     as time goes by.
 """
 magic.run_program(
-    "Wrench", 1280, 800, 
+    "Object Transformations", 1280, 800, 
     renderFrame, initResources, drawUi)
 
