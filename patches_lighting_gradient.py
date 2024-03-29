@@ -104,46 +104,19 @@ def renderFrame(width: int, height: int) -> None:
 
     magic.draw_vertex_data_as_triangles(
         g_triangleVerts1, worldToClipTransform)
-    magic.draw_vertex_data_as_triangles(
-        g_triangleVerts2, worldToClipTransform)
-    magic.draw_vertex_data_as_triangles(
-        g_triangleVerts3, worldToClipTransform)
+    magic.draw_vertex_data_as_coloured_triangles(
+        g_triangleVerts2, worldToClipTransform, (0,0,0,1))
+    magic.draw_vertex_data_as_coloured_triangles(
+        g_triangleVerts3, worldToClipTransform, (0,0,0,1))
     magic.draw_vertex_data_as_triangles(
         g_triangleVerts4, worldToClipTransform)
 
-    """
-        Draw UI display for the render data here to save having 
-        to copy transforms and data. ImGui can be used everywhere 
-        in the draw function, it is just usually neater to keep UI 
-        separate. But, not always!
-    """
-    """
-    if imgui.tree_node("World Space", imgui.TREE_NODE_DEFAULT_OPEN):
-        for i,(x,y,z) in enumerate(g_triangleVerts1):
-            imgui.input_float3(f"v{i}", x,y,z, flags = 2)
-        imgui.tree_pop()
-    if imgui.tree_node("View Space", imgui.TREE_NODE_DEFAULT_OPEN):
-        for i,(x,y,z) in enumerate(g_triangleVerts1):
-            hx,hy,hz,hw = worldToViewTransform * [x,y,z,1]
-            imgui.input_float3(f"v{i}", hx, hy, hz, flags=2)
-        imgui.tree_pop()
-    if imgui.tree_node("Clip Space", imgui.TREE_NODE_DEFAULT_OPEN):
-        for i,(x,y,z) in enumerate(g_triangleVerts1):
-            hx,hy,hz,hw = worldToClipTransform * [x,y,z,1]
-            imgui.input_float4(f"v{i}", hx, hy, hz, hw, flags = 2)
-        imgui.tree_pop()
-    if imgui.tree_node("NDC", imgui.TREE_NODE_DEFAULT_OPEN):
-        for i,(x,y,z) in enumerate(g_triangleVerts1):
-            hx,hy,hz,hw = worldToClipTransform * [x,y,z,1]
-            imgui.input_float3(f"v{i}", hx/hw, hy/hw, hz/hw, flags = 2)
-        imgui.tree_pop()
-    """
     cameraModelToWorldTransform = lu.Mat4()
     camera_scale_factor = 0.01
     camera_scaling_matrix = lu.make_scale(camera_scale_factor, camera_scale_factor, camera_scale_factor)
     cameraModelToWorldTransform = camera_scaling_matrix * cameraModelToWorldTransform
     cameraModelToWorldTransform = lu.make_translation(0.0, 3.0, -0.5) * cameraModelToWorldTransform
-    cameraModelToWorldTransform = lu.make_rotation_x(math.radians(-50.0)) * cameraModelToWorldTransform
+    cameraModelToWorldTransform = lu.make_rotation_x(math.radians(50.0)) * cameraModelToWorldTransform
     drawObjModel(viewToClipTransform, worldToViewTransform, cameraModelToWorldTransform, g_cameraModel)
 
     magic.draw_coordinate_system(viewToClipTransform, worldToViewTransform)
@@ -165,6 +138,7 @@ def drawUi(width: int, height: int) -> None:
     global g_cameraYawDeg
     global g_cameraPitchDeg
     global g_yFovDeg
+    
 
     imgui.push_item_width(125)
     _,g_cameraDistance = imgui.slider_float("CameraDistance", g_cameraDistance, 1.00, 30.0)
